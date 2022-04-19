@@ -56,7 +56,7 @@ k = random.randint(17761, 21000)
 @repeat(every().day.at("17:30"), h, ppdict)
 @repeat(every().day.at("18:30"), i, ppdict)
 @repeat(every().day.at("19:30"), j, ppdict)
-@repeat(every().day.at("22:08"), k, ppdict)
+@repeat(every().day.at("20:30"), k, ppdict)
 def yundong(step_, ppdict: dict):
     tim = str(int(time.time()))
     for phone, password in ppdict.items():
