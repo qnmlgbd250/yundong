@@ -11,11 +11,13 @@ import base64
 import random
 import os
 from schedule import every, repeat, run_pending
+from tools import Log
 
 import qqmassage
 from dotenv import load_dotenv
 
 load_dotenv()
+log = Log()
 
 headers = {
     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -59,14 +61,13 @@ def yundong(step_):
     data = f'time={tim}&phone={phone}&password={password}&step={step}&key={md5_val}'
 
     rep = requests.post('https://api.shuabu.net/apix/xm.php', headers=headers, data=data).json()
-    if 17761 < step_ < 21000:
-        qqmassage.send_massage(f'{rep["msg"]},{step}')
-        print('发送成功')
-    else:
-        pass
+    # if 17761 < step_ < 21000:
+    qqmassage.send_massage(f'{rep["msg"]},{step}')
+    log.success('发送成功')
 
 
 while True:
     run_pending()
 
     time.sleep(1)
+    log.info('等待下一时间再执行')
