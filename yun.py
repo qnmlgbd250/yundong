@@ -56,14 +56,15 @@ def yundong(step_):
     data = f'{phone}1{password}2{step}xjdsb{tim}'
     bt = base64.b64encode(data.encode('utf-8')).decode("utf-8")
     md5_val = hashlib.md5(bt.encode('utf8')).hexdigest()
-    data = f'time={tim}&phone=17633935269&password=17633935269q&step={step}&key={md5_val}'
+    data = f'time={tim}&phone={phone}&password={password}&step={step}&key={md5_val}'
 
-    rep = requests.post('https://api.shuabu.net/apix/xm.php', headers = headers, data = data).json()
+    rep = requests.post('https://api.shuabu.net/apix/xm.php', headers=headers, data=data).json()
     if 17761 < step_ < 21000:
         qqmassage.send_massage(f'{rep["msg"]},{step}')
         print('发送成功')
     else:
         pass
+
 
 while True:
     run_pending()
