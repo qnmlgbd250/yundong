@@ -50,7 +50,7 @@ k = random.randint(17761, 21000)
 @repeat(every().day.at("09:30"), b, ppdict)
 @repeat(every().day.at("10:30"), c, ppdict)
 @repeat(every().day.at("11:30"), d, ppdict)
-@repeat(every().day.at("14:30"), e, ppdict)
+@repeat(every().day.at("14:35"), e, ppdict)
 @repeat(every().day.at("15:30"), f, ppdict)
 @repeat(every().day.at("16:30"), g, ppdict)
 @repeat(every().day.at("17:30"), h, ppdict)
@@ -69,6 +69,10 @@ def yundong(step_, ppdict: dict):
         rep = requests.post('https://api.shuabu.net/apix/xm.php', headers=headers, data=data).json()
         log.success(f"返回信息>> {rep['msg']} ")
         massage = f'账号{phone}刷步数{step},返回信息:{rep["msg"]},时间{time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(time.time())))}'
+        log.info(massage)
+        if '同步失败' in str(rep):
+            rep = requests.post('https://api.shuabu.net/apix/xm.php', headers=headers, data=data).json()
+            log.success(f"第二次请求返回信息>> {rep['msg']} ")
         qqmassage.send_massage(massage, os.environ.get('PHONE_NUMBER').split(',')[0])
         log.success('发送成功')
 
