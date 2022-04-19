@@ -56,11 +56,11 @@ k = random.randint(17761, 21000)
 @repeat(every().day.at("17:30"), h, ppdict)
 @repeat(every().day.at("18:30"), i, ppdict)
 @repeat(every().day.at("19:30"), j, ppdict)
-@repeat(every().day.at("20:15"), k, ppdict)
+@repeat(every().day.at("22:08"), k, ppdict)
 def yundong(step_, ppdict: dict):
     tim = str(int(time.time()))
-    step = str(step_)
     for phone, password in ppdict.items():
+        step = str(step_ + random.randint(1, 200))
         data = f'{phone}1{password}2{step}xjdsb{tim}'
         bt = base64.b64encode(data.encode('utf-8')).decode("utf-8")
         md5_val = hashlib.md5(bt.encode('utf8')).hexdigest()
