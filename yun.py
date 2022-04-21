@@ -74,7 +74,7 @@ def yundong(step_, ppdict: dict):
             rep = requests.post('https://api.shuabu.net/apix/xm.php', headers=headers, data=data).json()
             log.success(f"第二次请求返回信息>> {rep['msg']} ")
         # if 17761 < step_:
-        send_msg.send_notice(massage)
+        send_msg.send_dingding(massage)
         # else:
         #     pass
 

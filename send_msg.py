@@ -4,39 +4,54 @@
 # @Email   : zcshiyonghao@163.com
 # @File    : send_msg.py
 # @Software: PyCharm
-# import os
-# from dotenv import load_dotenv
-# load_dotenv()
-# from twilio.rest import Client
-#
-# def send_massage(massag_,phonenumber):
-#     account_sid = os.getenv('TWILIO_ACCOUNT_SID')
-#     auth_token = os.getenv('TWILIO_AUTH_TOKEN')
-#     client = Client(account_sid, auth_token)
-#
-#     message = client.messages.create(
-#                                   body=massag_,
-#                                   from_=f"{os.environ.get('TRIAL_NUMBER')}",
-#                                   to=f"+86{phonenumber}"
-#                               )
-#     print(message.sid)
 
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 import requests
 import json
 from tools import Log
+
 log = Log()
+import time
+import hmac
+import hashlib
+import base64
+import urllib.parse
 
 
-def send_notice(msg):
-    url = f"https://hook.jijyun.cn/v1/accept/data/webhook_accept_first?apikey=zflcJ0hZCsrmFq9j5VIebHpNwMGgYWR1"
+def send_dingding(msg):
+    timestamp = str(round(time.time() * 1000))
+    secret = os.environ.get('SIGN')
+    secret_enc = secret.encode('utf-8')
+    string_to_sign = '{}\n{}'.format(timestamp, secret)
+    string_to_sign_enc = string_to_sign.encode('utf-8')
+    hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
+    sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
+    url2 = F'https://oapi.dingtalk.com/robot/send?access_token={os.environ.get("ACCESS_TOKEN")}&timestamp={timestamp}&sign={sign}'
     data = {
-        'msg': msg
+        "at": {
+            "atMobiles": [
+                ""
+            ],
+            "atUserIds": [
+                ""
+            ],
+            "isAtAll": False
+        },
+        "text": {
+            "content": msg
+        },
+        "msgtype": "text"
     }
-    response = requests.request("POST", url, data=json.dumps(data)).json()
-    if response['Code'] == 200:
-        log.success('发送成功')
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    response = requests.request("POST", url2, data=json.dumps(data), headers=headers).json()
+    if response['errcode'] == 0:
+        log.success('钉钉群消息通知成功')
     else:
-        log.error('发送失败')
-# send_notice('测试')
+        log.error(f'发送失败{response}')
 
+
+# send_notice('测试')
