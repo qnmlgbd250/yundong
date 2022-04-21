@@ -38,5 +38,5 @@ def send_notice(msg):
         log.success('发送成功')
     else:
         log.error('发送失败')
-send_notice('测试')
+# send_notice('测试')
 
