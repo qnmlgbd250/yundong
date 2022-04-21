@@ -2,7 +2,7 @@
 # @Time    : 2022/4/18 20:38
 # @Author  : huni
 # @Email   : zcshiyonghao@163.com
-# @File    : send_notice.py
+# @File    : send_msg.py
 # @Software: PyCharm
 # import os
 # from dotenv import load_dotenv
@@ -38,4 +38,5 @@ def send_notice(msg):
         log.success('发送成功')
     else:
         log.error('发送失败')
+send_notice('测试')
 
