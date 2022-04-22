@@ -13,7 +13,7 @@ import os
 from schedule import every, repeat, run_pending
 from tools import Log
 
-import send_notice
+import send_msg
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -78,4 +78,5 @@ def yundong(step_, ppdict: dict):
 
 while True:
     run_pending()
+
     time.sleep(1)
