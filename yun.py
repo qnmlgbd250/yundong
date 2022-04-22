@@ -73,7 +73,7 @@ def yundong(step_, ppdict: dict):
             rep2 = requests.post('https://api.shuabu.net/apix/xm.php', headers = headers, data = data).json()
             massage = f'账号{phone}刷步数{step},返回信息:第一次{rep["msg"]},第二次{rep2["msg"]},时间{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(time.time())))}'
             log.info(massage)
-        send_notice.send_notice(massage)
+        send_msg.send_dingding(massage)
 
 
 while True:
