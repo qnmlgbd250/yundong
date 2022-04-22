@@ -65,21 +65,17 @@ def yundong(step_, ppdict: dict):
         bt = base64.b64encode(data.encode('utf-8')).decode("utf-8")
         md5_val = hashlib.md5(bt.encode('utf8')).hexdigest()
         data = f'time={tim}&phone={phone}&password={password}&step={step}&key={md5_val}'
-
-        rep = requests.post('https://api.shuabu.net/apix/xm.php', headers=headers, data=data).json()
+        rep = requests.post('https://api.shuabu.net/apix/xm.php', headers = headers, data = data).json()
         log.success(f"返回信息>> {rep['msg']} ")
         massage = f'账号{phone}刷步数{step},返回信息:{rep["msg"]},时间{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(time.time())))}'
         log.info(massage)
-        if '同步失败' in str(rep):
-            rep = requests.post('https://api.shuabu.net/apix/xm.php', headers=headers, data=data).json()
-            log.success(f"第二次请求返回信息>> {rep['msg']} ")
-        # if 17761 < step_:
+        if any(rep['msg'] in i for i in ['同步失败', '登陆失败，账号或密码错误']):
+            rep2 = requests.post('https://api.shuabu.net/apix/xm.php', headers = headers, data = data).json()
+            massage = f'账号{phone}刷步数{step},返回信息:第一次{rep["msg"]},第二次{rep2["msg"]},时间{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(time.time())))}'
+            log.info(massage)
         send_notice.send_notice(massage)
-        # else:
-        #     pass
 
 
 while True:
     run_pending()
-
     time.sleep(1)
