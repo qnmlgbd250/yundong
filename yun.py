@@ -69,7 +69,7 @@ def yundong(step_, ppdict: dict):
         log.success(f"返回信息>> {rep['msg']} ")
         massage = f'账号{phone}刷步数{step},返回信息:{rep["msg"]},时间{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(time.time())))}'
         log.info(massage)
-        if any(rep['msg'] in i for i in ['同步失败', '登陆失败，账号或密码错误']):
+        if any(rep['msg'] in i for i in ['同步失败', '登录失败，账户或密码错误']):
             rep2 = requests.post('https://api.shuabu.net/apix/xm.php', headers = headers, data = data).json()
             massage = f'账号{phone}刷步数{step},返回信息:第一次{rep["msg"]},第二次{rep2["msg"]},时间{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(time.time())))}'
             log.info(massage)
